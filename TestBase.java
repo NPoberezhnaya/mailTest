@@ -47,22 +47,25 @@ public class TestBase {
 
     }
 
-    protected void  waitUntil()
+    protected void  waitUntilInputLabelAppears(String xPathString)
     {
         // wait until "Входящие" appears
-        String inputLabelXPath = ".//*[@id='b-nav_folders']//span[contains(@class, \"b-nav__item__text b-nav__item__text_unread\")]";
+
         WebDriverWait wait = new WebDriverWait(driver, 30/*seconds*/);
-        WebElement element = wait.until(presenceOfElementLocated(By.xpath(inputLabelXPath)));
+        WebElement element = wait.until(presenceOfElementLocated(By.xpath(xPathString)));
 
 
     }
 
-
     protected Boolean  isDisplayCheck() {
-        waitUntil();
         String inputLabelXPath = ".//*[@id='b-nav_folders']//span[contains(@class, \"b-nav__item__text b-nav__item__text_unread\")]";
-        Boolean bool = driver.findElement(By.xpath(inputLabelXPath)).isDisplayed();
+        waitUntilInputLabelAppears(inputLabelXPath);
+
+        Boolean bool = false;
         // System.out.println(bool);
+        int sizeList = driver.findElements(By.xpath(inputLabelXPath)).size();
+        if (sizeList > 0)
+           bool = true;
         return bool;
     }
 }
